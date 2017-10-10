@@ -1,0 +1,5 @@
+{
+	todos: [
+		{value: 'string', completd: boolean, id: 0}
+	]
+}
