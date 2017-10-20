@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import {Main} from './Main';
 import {Footer} from './Footer';
-import { connect } from 'react-redux';
-import * as todoActions from './actions';
-import { bindActionCreators } from 'redux';
 
 export class Header extends Component {
   constructor(props) {
@@ -109,28 +106,8 @@ export class Header extends Component {
 		      	onKeyPress={this.handleKeyPress} onChange={this.handleChange} autoFocus />
 		    	</header>
 		    	<Main tasks={this.props.tasks} handleEnter={this.handleEnter} handleToggleAll={this.handleToggleAll} handleTaskChange={this.handleTaskChange} handleBlur={this.handleBlur} handleEdit={this.handleEdit} handleDestroy={this.handleDestroy} handleCompleted={this.handleCompleted}/>
-		    	<Footer count={this.itemsLeft} handleClearCompleted={this.handleClearCompleted} handleActiveClick={this.handleActiveClick} handleAllClick={this.handleAllClick} handleCompletedClick={this.handleCompletedClick}/>
+		    	<Footer count={this.props.itemsLeft} handleClearCompleted={this.handleClearCompleted} handleActiveClick={this.handleActiveClick} handleAllClick={this.handleAllClick} handleCompletedClick={this.handleCompletedClick}/>
     		</div>
     	);
   	}
 	}
-
-function mapStateToProps (state) {
-  return {
-    tasks: state.tasks,
-    value: state.value,
-    itemsLeft: state.itemsLeft,
-    currId: state.currId
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    actions: bindActionCreators(todoActions, dispatch)
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Header)

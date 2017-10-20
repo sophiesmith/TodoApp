@@ -4,7 +4,8 @@ import {ListItem} from './ListItem';
 export class ToDoList extends Component {
 
 	render() {
-		let tasks = this.props.tasks.filter((val, i) => this.props.tasks[i].visible === true);
+		console.log(this.props);
+		let tasks = this.props.tasks.filter((val, i) => val.visible === true);
 
 		return (
 			<ul className="todo-list">

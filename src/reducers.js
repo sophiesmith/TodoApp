@@ -11,20 +11,35 @@ export const initialState = {
 export function todoApp(state = initialState, action) {
 	switch(action.type) {
 		case todoActions.ADD_TODO:
-			return Object.assign({}, state, {
+			return {
+				...state,
 				tasks: [
 					...state.tasks,
 					{
-						task: action.task,
-						id: state.id+1,
+						value: action.task,
+						id: state.currId+1,
 						status: '',
 						visible: true
 					}
 				],
 				value: '',
 				itemsLeft: state.itemsLeft+1,
-				currId: state.id+1
-			})
+				currId: state.currId+1
+			};
+			// return Object.assign({}, state, {
+			// 	tasks: [
+			// 		...state.tasks,
+			// 		{
+			// 			value: action.task,
+			// 			id: state.currId+1,
+			// 			status: '',
+			// 			visible: true
+			// 		}
+			// 	],
+			// 	value: '',
+			// 	itemsLeft: state.itemsLeft+1,
+			// 	currId: state.currId+1
+			// })
 		case todoActions.TOGGLE_COMPLETED: 
 			return Object.assign({}, state, {
 				tasks: state.tasks.map((task) => {
@@ -32,6 +47,8 @@ export function todoApp(state = initialState, action) {
 						return Object.assign({}, task, {
 							status: (task.status === 'completed' ? '' : 'completed')
 						})
+					} else {
+						return task;
 					}
 				})
 			})
@@ -42,6 +59,8 @@ export function todoApp(state = initialState, action) {
 						return Object.assign({}, task, {
 							status: (task.status === 'editing' ? '' : 'editing')
 						})
+					} else {
+						return task;
 					}
 				})
 			})
@@ -52,6 +71,8 @@ export function todoApp(state = initialState, action) {
 						return Object.assign({}, task, {
 							value: action.newTask
 						})
+					} else {
+						return task;
 					}
 				})
 			})
@@ -60,13 +81,15 @@ export function todoApp(state = initialState, action) {
 				tasks: state.tasks.map((task) => {
 					if (task.id === action.id) {
 						return Object.assign({}, task, {
-							visibility: action.val
+							visible: action.val
 						})
+					} else {
+						return task;
 					}
 				})
 			})
 		case todoActions.REMOVE_TODO:
-			const i = tasks.findIndex((val, j) => tasks[j].id === action.id);
+			const i = state.tasks.findIndex((val, j) => val.id === action.id);
 			let itemsLeft = state.itemsLeft;
 			if (state.tasks[i].status !== 'completed') {
 				itemsLeft--;
@@ -85,7 +108,7 @@ export function todoApp(state = initialState, action) {
 			let toggleTo = '';
 
 			for (let i=0; i<tasks.length; i++) {
-	  			tasks[i].status = this.state.toggleTo;
+	  			tasks[i].status = state.toggleTo;
 	  		}
 	  		if (state.toggleTo === '') {
   			toggleTo = 'completed';
@@ -96,7 +119,7 @@ export function todoApp(state = initialState, action) {
 			})
 		case todoActions.CLEAR_COMPLETED:
 			return Object.assign({}, state, {
-				tasks: this.state.tasks.filter((val, i) => tasks[i].status !== 'completed')
+				tasks: state.tasks.filter((val, i) => val.status !== 'completed')
 			})
 		default:
 			return state
