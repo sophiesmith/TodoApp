@@ -26,31 +26,26 @@ export function todoApp(state = initialState, action) {
 				itemsLeft: state.itemsLeft+1,
 				currId: state.currId+1
 			};
-			// return Object.assign({}, state, {
-			// 	tasks: [
-			// 		...state.tasks,
-			// 		{
-			// 			value: action.task,
-			// 			id: state.currId+1,
-			// 			status: '',
-			// 			visible: true
-			// 		}
-			// 	],
-			// 	value: '',
-			// 	itemsLeft: state.itemsLeft+1,
-			// 	currId: state.currId+1
-			// })
 		case todoActions.TOGGLE_COMPLETED: 
+			let items = state.itemsLeft;
+			let status = '';
 			return Object.assign({}, state, {
 				tasks: state.tasks.map((task) => {
 					if (task.id === action.id) {
+						if (task.status === 'completed') {
+							items++;
+						} else {
+							items--;
+							status = 'completed';
+						}
 						return Object.assign({}, task, {
-							status: (task.status === 'completed' ? '' : 'completed')
+							status: status
 						})
 					} else {
 						return task;
 					}
-				})
+				}),
+				itemsLeft: items
 			})
 		case todoActions.TOGGLE_EDIT: 
 			return Object.assign({}, state, {
