@@ -5,11 +5,21 @@ export const initialState = {
   	value: '', 
   	toggleTo: 'completed',
   	itemsLeft: 0,
-  	currId: -1
+  	userId: 0
 }
 
 export function todoApp(state = initialState, action) {
 	switch(action.type) {
+		case todoActions.CHANGE_USER:
+			return {
+				...state,
+				userId: action.id
+			};
+		case todoActions.UPDATE_ITEMS:
+			return {
+				...state,
+				itemsLeft: action.items
+			};
 		case todoActions.ADD_TODO:
 			return {
 				...state,
@@ -17,21 +27,19 @@ export function todoApp(state = initialState, action) {
 					...state.tasks,
 					{
 						value: action.task,
-						id: state.currId+1,
 						status: '',
 						visible: true
 					}
 				],
 				value: '',
 				itemsLeft: state.itemsLeft+1,
-				currId: state.currId+1
 			};
 		case todoActions.TOGGLE_COMPLETED: 
 			let items = state.itemsLeft;
 			let status = '';
 			return Object.assign({}, state, {
 				tasks: state.tasks.map((task) => {
-					if (task.id === action.id) {
+					if (task.key === action.id) {
 						if (task.status === 'completed') {
 							items++;
 						} else {
@@ -50,7 +58,7 @@ export function todoApp(state = initialState, action) {
 		case todoActions.TOGGLE_EDIT: 
 			return Object.assign({}, state, {
 				tasks: state.tasks.map((task) => {
-					if (task.id === action.id) {
+					if (task.key === action.id) {
 						return Object.assign({}, task, {
 							status: (task.status === 'editing' ? '' : 'editing')
 						})
@@ -62,7 +70,7 @@ export function todoApp(state = initialState, action) {
 		case todoActions.CHANGE_TASK:
 			return Object.assign({}, state, {
 				tasks: state.tasks.map((task) => {
-					if (task.id === action.id) {
+					if (task.key === action.id) {
 						return Object.assign({}, task, {
 							value: action.newTask
 						})
@@ -74,7 +82,7 @@ export function todoApp(state = initialState, action) {
 		case todoActions.SET_VISIBILITY:
 			return Object.assign({}, state, {
 				tasks: state.tasks.map((task) => {
-					if (task.id === action.id) {
+					if (task.key === action.id) {
 						return Object.assign({}, task, {
 							visible: action.val
 						})
@@ -91,7 +99,7 @@ export function todoApp(state = initialState, action) {
 			}
 
 			return Object.assign({}, state, {
-				tasks: state.tasks.filter((task) => task.id !== action.id),
+				tasks: state.tasks.filter((task) => task.key !== action.id),
 				itemsLeft: itemsLeft
 			})
 		case todoActions.CHANGE_INPUT:

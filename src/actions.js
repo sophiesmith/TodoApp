@@ -1,5 +1,4 @@
 
-
 export const ADD_TODO = "ADD_TODO"
 export const TOGGLE_COMPLETED = "TOGGLE_COMPLETED"
 export const TOGGLE_EDIT = "TOGGLE_EDIT"
@@ -9,6 +8,8 @@ export const REMOVE_TODO = "REMOVE_TODO"
 export const CHANGE_INPUT = "CHANGE_INPUT"
 export const TOGGLE_ALL = "TOGGLE_ALL"
 export const CLEAR_COMPLETED = "CLEAR_COMPLETED"
+export const UPDATE_ITEMS = "UPDATE_ITEMS"
+export const CHANGE_USER = "CHANGE_USER"
 
 export function addTodo(task) {
   return { type: ADD_TODO, task }
@@ -44,4 +45,12 @@ export function toggleAll() {
 
 export function clearCompleted() {
 	return {type: CLEAR_COMPLETED}
+}
+
+export function updateItems(items) {
+	return {type: UPDATE_ITEMS, items}
+}
+
+export function changeUser(id) {
+	return {type: CHANGE_USER, id}
 }
