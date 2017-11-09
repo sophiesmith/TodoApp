@@ -26,12 +26,26 @@ export class Header extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+   componentDidMount(){
+      const {firebase, actions} = this.props
+       firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            console.log("auth'd user")
+            console.log(user)
+            actions.changeUser(user.uid);
+          } else {
+            console.log("no auth'd user")
+            actions.changeUser(0);
+          }
+      })
+    }
+
 
   	handleClearCompleted() {
   		//this.props.actions.clearCompleted();
       this.props.tasks.map((task) => {
          if (task.status === 'completed') {
-            this.removeTodo(task.key);
+            this.removeTodo(task.id);
           } 
         })
   	}
@@ -39,7 +53,7 @@ export class Header extends Component {
   	handleAllClick() {
   		const tasks = this.props.tasks;
   		for (let i=0; i<tasks.length; i++) {
-        this.updateTodo(tasks[i].key, {visible:true});
+        this.updateTodo(tasks[i].id, {visible:true});
   		}
   	}
 
@@ -47,9 +61,9 @@ export class Header extends Component {
   		const tasks = this.props.tasks;
   		for (let i=0; i<tasks.length; i++) {
   			if (tasks[i].status === 'completed') {
-  				this.updateTodo(tasks[i].key, {visible:false});
+  				this.updateTodo(tasks[i].id, {visible:false});
   			} else {
-  				this.updateTodo(tasks[i].key, {visible:true});
+  				this.updateTodo(tasks[i].id, {visible:true});
   			}
   		}
   	}
@@ -58,9 +72,9 @@ export class Header extends Component {
   		const tasks = this.props.tasks;
   		for (let i=0; i<tasks.length; i++) {
   			if (tasks[i].status === 'completed') {
-  				this.updateTodo(tasks[i].key, {visible:true});
+  				this.updateTodo(tasks[i].id, {visible:true});
   			} else {
-  				this.updateTodo(tasks[i].key, {visible:false});
+  				this.updateTodo(tasks[i].id, {visible:false});
   			}
   		}
   	}
@@ -68,7 +82,7 @@ export class Header extends Component {
   	handleToggleAll() {
   		this.props.actions.toggleAll();
       this.props.tasks.map((task) => {
-          this.updateTodo(task.key, {status: this.props.toggleTo})
+          this.updateTodo(task.id, {status: this.props.toggleTo})
       })
       let items = this.props.tasks.length;
       if (this.props.toggleTo === 'completed') {
@@ -80,11 +94,11 @@ export class Header extends Component {
   	handleDestroy(id) {
       let items = this.props.itemsLeft;
       this.props.tasks.map((task) => {
-          if (task.key === id) {
+          if (task.id === id) {
             if (task.status !== 'completed') {
               items--;
             } 
-            this.removeTodo(task.key);
+            this.removeTodo(task.id);
           } 
         })
       this.props.actions.updateItems(items);
@@ -104,13 +118,13 @@ export class Header extends Component {
   		//this.props.actions.toggleCompleted(id);
       let items = this.props.itemsLeft;
       this.props.tasks.map((task) => {
-          if (task.key === id) {
+          if (task.id === id) {
             if (task.status === 'completed') {
               items++;
-              this.updateTodo(task.key, {status: ''})
+              this.updateTodo(task.id, {status: ''})
             } else {
               items--;
-              this.updateTodo(task.key, {status: 'completed'})
+              this.updateTodo(task.id, {status: 'completed'})
             }
           } 
         })
@@ -122,11 +136,11 @@ export class Header extends Component {
   	handleEdit(id) {
   		//this.props.actions.toggleEdit(id);
       this.props.tasks.map((task) => {
-          if (task.key === id) {
+          if (task.id === id) {
             if (task.status === 'editing') {
-              this.updateTodo(task.key, {status: ''})
+              this.updateTodo(task.id, {status: ''})
             } else {
-              this.updateTodo(task.key, {status: 'editing'})
+              this.updateTodo(task.id, {status: 'editing'})
             }
           } 
         })
@@ -134,7 +148,7 @@ export class Header extends Component {
 
   	handleTaskChange(id, e) {
   		this.props.tasks.map((task) => {
-          if (task.key === id) {
+          if (task.id === id) {
               this.updateTodo(id, {value: e.target.value});
           }
         })
@@ -143,9 +157,9 @@ export class Header extends Component {
   	handleEnter(id, e) {
   		if (e.key === 'Enter') {
 	  		this.props.tasks.map((task) => {
-          if (task.key === id) {
+          if (task.id === id) {
             if (task.status === 'editing') {
-              this.updateTodo(task.key, {status: ''})
+              this.updateTodo(task.id, {status: ''})
             } 
           } 
       })
@@ -154,9 +168,9 @@ export class Header extends Component {
 
   	handleBlur(id) {
   		this.props.tasks.map((task) => {
-          if (task.key === id) {
+          if (task.id === id) {
             if (task.status === 'editing') {
-              this.updateTodo(task.key, {status: ''})
+              this.updateTodo(task.id, {status: ''})
             } 
           } 
       })
@@ -203,20 +217,6 @@ export class Header extends Component {
         console.log('there was an error', error)
         console.log('error prop:', this.props.authError) // thanks to connect
       });
-
-      const user = firebase.auth().currentUser;
-
-      if (user != null) {
-        firebase.database().ref('/users/').once('value').then(function(snapshot) {
-            if (snapshot.hasChild(user.uid)) {
-                this.props.actions.changeUser(user.uid);
-            } else {
-                firebase.push('/users/', user.uid);
-                this.props.actions.changeUser(user.uid);
-                console.log("user id is "+user.uid);
-            }
-        });
-      }
     }
 
     handleLogout() {
