@@ -15,7 +15,7 @@ var config = {
         authDomain: "todo-app-1f3f9.firebaseapp.com",
         databaseURL: "https://todo-app-1f3f9.firebaseio.com",
         projectId: "todo-app-1f3f9",
-        storageBucket: "",
+        storageBucket: "todo-app-1f3f9.appspot.com",
         messagingSenderId: "123120313219"
       };
 

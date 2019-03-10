@@ -10,6 +10,8 @@ export const TOGGLE_ALL = "TOGGLE_ALL"
 export const CLEAR_COMPLETED = "CLEAR_COMPLETED"
 export const UPDATE_ITEMS = "UPDATE_ITEMS"
 export const CHANGE_USER = "CHANGE_USER"
+export const CHANGE_COLOR = "CHANGE_COLOR"
+export const CHANGE_PHOTO = "CHANGE_PHOTO"
 
 export function addTodo(task) {
   return { type: ADD_TODO, task }
@@ -53,4 +55,12 @@ export function updateItems(items) {
 
 export function changeUser(id) {
 	return {type: CHANGE_USER, id}
+}
+
+export function changeColor(val) {
+	return {type: CHANGE_COLOR, val}
+}
+
+export function changePhoto(file, url) {
+	return {type: CHANGE_PHOTO, file, url}
 }

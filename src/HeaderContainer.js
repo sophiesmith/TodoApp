@@ -14,10 +14,13 @@ function mapStateToProps (state) {
   let tasksArray = [];
   for(let attr in tasks){
     let task = tasks[attr];
-    tasksArray.push({status: task.status, value: task.value, visible: task.visible, id: attr});
+    tasksArray.push({status: task.status, value: task.value, color: task.color, photo: task.photo, visible: task.visible, id: attr});
   }
   return {
     value: todoApp.value,
+    color: todoApp.color,
+    photo: todoApp.photo,
+    photoUrl: todoApp.photoUrl,
     tasks: tasksArray,
     itemsLeft: todoApp.itemsLeft,
     toggleTo: todoApp.toggleTo,

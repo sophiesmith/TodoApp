@@ -3,6 +3,9 @@ import * as todoActions from './actions'
 export const initialState = {
 	tasks: [],
   	value: '', 
+  	color: '#000000',
+  	photo: '',
+  	photoUrl: '',
   	toggleTo: 'completed',
   	itemsLeft: 0,
   	userId: 0
@@ -27,6 +30,8 @@ export function todoApp(state = initialState, action) {
 					...state.tasks,
 					{
 						value: action.task,
+						color: state.color,
+						photo: state.photoUrl,
 						status: '',
 						visible: true
 					}
@@ -106,6 +111,15 @@ export function todoApp(state = initialState, action) {
 			return Object.assign({}, state, {
 				value: action.val
 			})
+		case todoActions.CHANGE_COLOR:
+			return Object.assign({}, state, {
+				color: action.val
+			})
+		case todoActions.CHANGE_PHOTO:
+	      return Object.assign({}, state, {
+			photo: action.file,
+			photoUrl: action.url
+		  })
 		case todoActions.TOGGLE_ALL:
 			const tasks = state.tasks.slice();
 			let toggleTo = '';

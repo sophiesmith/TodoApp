@@ -27,6 +27,10 @@ export class ListItem extends Component {
   		this.props.handleEnter(task, e);
   	}
 
+  	handleColorChange(task, e) {
+
+  	}
+
 	render() {
 		let checked = this.props.status;
 		if (checked === 'completed') {
@@ -34,12 +38,13 @@ export class ListItem extends Component {
 		} else {
 			checked = '';
 		}
-		return (
 
+		return (
 			<li className={this.props.status}>
 				<div className="view">
 	              <input className="toggle" type="checkbox" checked={checked} onClick={this.handleCompleted.bind(this, this.props.id)}/>
-	              <label onDoubleClick={this.handleEdit.bind(this, this.props.id)}>{this.props.task}</label>
+	              <label style={{color: this.props.color}} onDoubleClick={this.handleEdit.bind(this, this.props.id)}>{this.props.task}</label>
+	              <img src={this.props.photo} style={{width: '70%', marginLeft: '60px'}}/>
 	              <button className="destroy" onClick={this.handleDestroy.bind(this, this.props.id)}></button>
 	            </div>
 	            <input className="edit" value={this.props.task} onKeyPress={this.handleEnter.bind(this, this.props.id)} onChange={this.handleTaskChange.bind(this, this.props.id)} onBlur={this.handleBlur.bind(this, this.props.id)}/>

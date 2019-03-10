@@ -6,6 +6,7 @@
     "firebase": "^4.6.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.1",
+    "react-firebase-file-uploader": "^2.4.2",
     "react-redux": "^5.0.6",
     "react-redux-firebase": "^1.5.1",
     "react-scripts": "1.0.13",
