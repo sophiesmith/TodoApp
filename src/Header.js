@@ -7,35 +7,12 @@ import FileUploader from "react-firebase-file-uploader";
 export class Header extends Component {
   constructor(props) {
   	super(props);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleDestroy = this.handleDestroy.bind(this);
-    this.handleCompleted = this.handleCompleted.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.handleTaskChange = this.handleTaskChange.bind(this);
-    this.handleToggleAll = this.handleToggleAll.bind(this);
-    this.handleActiveClick = this.handleActiveClick.bind(this);
-    this.handleAllClick = this.handleAllClick.bind(this);
-    this.handleCompletedClick = this.handleCompletedClick.bind(this);
-    this.handleClearCompleted = this.handleClearCompleted.bind(this);
-    this.handleEnter = this.handleEnter.bind(this);
-    this.updateTodo = this.updateTodo.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-    this.handleColorChange = this.handleColorChange.bind(this);
-    this.handlePhoto = this.handlePhoto.bind(this);
-    this.handleUrl = this.handleUrl.bind(this);
 
     const {firebase, actions} = this.props;
        firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            console.log("auth'd user")
-            console.log(user)
             actions.changeUser(user.uid);
-            console.log(props.tasks);
           } else {
-            console.log("no auth'd user")
             actions.changeUser(0);
           }
       })
@@ -43,8 +20,7 @@ export class Header extends Component {
 
 
 
-  	handleClearCompleted() {
-  		//this.props.actions.clearCompleted();
+  	handleClearCompleted = () => {
       this.props.tasks.map((task) => {
          if (task.status === 'completed') {
             this.removeTodo(task.id);
@@ -52,14 +28,14 @@ export class Header extends Component {
         })
   	}
 
-  	handleAllClick() {
+  	handleAllClick = () => {
   		const tasks = this.props.tasks;
   		for (let i=0; i<tasks.length; i++) {
         this.updateTodo(tasks[i].id, {visible:true});
   		}
   	}
 
-  	handleActiveClick() {
+  	handleActiveClick = () => {
   		const tasks = this.props.tasks;
   		for (let i=0; i<tasks.length; i++) {
   			if (tasks[i].status === 'completed') {
@@ -70,7 +46,7 @@ export class Header extends Component {
   		}
   	}
 
-  	handleCompletedClick() {
+  	handleCompletedClick = () => {
   		const tasks = this.props.tasks;
   		for (let i=0; i<tasks.length; i++) {
   			if (tasks[i].status === 'completed') {
@@ -81,7 +57,7 @@ export class Header extends Component {
   		}
   	}
 
-  	handleToggleAll() {
+  	handleToggleAll = () => {
   		this.props.actions.toggleAll();
       this.props.tasks.map((task) => {
           this.updateTodo(task.id, {status: this.props.toggleTo})
@@ -93,7 +69,7 @@ export class Header extends Component {
       this.props.actions.updateItems(items);
   	}
 
-  	handleDestroy(id) {
+  	handleDestroy = (id) => {
       let items = this.props.itemsLeft;
       this.props.tasks.map((task) => {
           if (task.id === id) {
@@ -106,8 +82,7 @@ export class Header extends Component {
       this.props.actions.updateItems(items);
     }
 
-  	handleCompleted(id) {
-  		//this.props.actions.toggleCompleted(id);
+  	handleCompleted = (id) => {
       let items = this.props.itemsLeft;
       this.props.tasks.map((task) => {
           if (task.id === id) {
@@ -125,8 +100,7 @@ export class Header extends Component {
     }
   	
 
-  	handleEdit(id) {
-  		//this.props.actions.toggleEdit(id);
+  	handleEdit = (id) => {
       this.props.tasks.map((task) => {
           if (task.id === id) {
             if (task.status === 'editing') {
@@ -138,7 +112,7 @@ export class Header extends Component {
         })
   	}
 
-  	handleTaskChange(id, e) {
+  	handleTaskChange = (id, e) => {
   		this.props.tasks.map((task) => {
           if (task.id === id) {
               this.updateTodo(id, {value: e.target.value});
@@ -146,7 +120,7 @@ export class Header extends Component {
         })
   	}
 
-  	handleEnter(id, e) {
+  	handleEnter = (id, e) => {
   		if (e.key === 'Enter') {
 	  		this.props.tasks.map((task) => {
           if (task.id === id) {
@@ -158,7 +132,7 @@ export class Header extends Component {
       }
   	}
 
-  	handleBlur(id) {
+  	handleBlur = (id) => {
   		this.props.tasks.map((task) => {
           if (task.id === id) {
             if (task.status === 'editing') {
@@ -168,7 +142,7 @@ export class Header extends Component {
       })
   	}
 
-  	handleKeyPress(e) {
+  	handleKeyPress = (e) => {
 	  	if (e.key === 'Enter' && (e.target.value || this.props.photoUrl)) {
         let items = this.props.itemsLeft;
 	  		this.props.actions.addTodo(e.target.value);
@@ -183,26 +157,24 @@ export class Header extends Component {
           visible: true })
 
 	  	}
-
-     
   	}
 
-    updateTodo(id, data) {
+    updateTodo = (id, data) => {
       const { firebase } = this.props;
       firebase.update('/users/'+this.props.userId+'/'+id, data);
     }
 
-    removeTodo(id) {
+    removeTodo = (id) => {
       const {firebase} = this.props;
       firebase.remove('/users/'+this.props.userId+'/'+id);
     }
 
 
-  	handleChange(e) {
+  	handleChange = (e) => {
   		this.props.actions.changeInput(e.target.value);
   	}
 
-    handleLogin() {
+    handleLogin = () => {
       const {firebase} = this.props;
       const credentials = {
         provider: "google",
@@ -211,39 +183,32 @@ export class Header extends Component {
       firebase.login(credentials);
     }
 
-    handleLogout() {
+    handleLogout = () => {
       const {firebase} = this.props;
       firebase.logout();
       window.location.reload();
     }
 
-    handleColorChange(e) {
+    handleColorChange = (e) => {
       this.props.actions.changeColor(e.target.value);
     }
 
-    handlePhoto(e) {
-      let file = e.target.files[0];
-      let url = URL.createObjectURL(file);
-      this.props.actions.changePhoto(file, url);
-    }
-
-    handleUrl(e) {
+    handleUrl = (e) => {
       this.props.actions.changePhoto('', e.target.value);
     }
 
 
-  handleUploadSuccess = filename => {
-    const {firebase} = this.props;
-   // this.setState({ avatar: filename, progress: 100, isUploading: false });
-    firebase
-      .storage()
-      .ref("images")
-      .child(filename)
-      .getDownloadURL()
-      .then(
-        url => this.props.actions.changePhoto(filename, url)
-        );
-  };
+    handleUploadSuccess = filename => {
+      const {firebase} = this.props;
+      firebase
+        .storage()
+        .ref("images")
+        .child(filename)
+        .getDownloadURL()
+        .then(
+          url => this.props.actions.changePhoto(filename, url)
+          );
+    };
 
   
 
@@ -262,8 +227,7 @@ export class Header extends Component {
             name="pic"
             randomizeFilename
             storageRef={firebase.storage().ref("images")}
-            onUploadSuccess={this.handleUploadSuccess}
-          />
+            onUploadSuccess={this.handleUploadSuccess} />
             <div className="url">Or enter a URL:<input type="text" onChange={this.handleUrl}/></div>
 		    	</header>
 		    	<Main tasks={this.props.tasks} handleEnter={this.handleEnter} handleToggleAll={this.handleToggleAll} handleTaskChange={this.handleTaskChange} handleBlur={this.handleBlur} handleEdit={this.handleEdit} handleDestroy={this.handleDestroy} handleCompleted={this.handleCompleted}/>
