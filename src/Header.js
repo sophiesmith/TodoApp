@@ -224,7 +224,7 @@ export class Header extends Component {
 		      	<h1>todos</h1>
 		      	<input className="new-todo" style={{color: this.props.color}} value={this.props.value} placeholder="What needs to be done?" 
 		      	onKeyPress={this.handleKeyPress} onChange={this.handleChange} autoFocus />
-            <img src={this.props.photoUrl} style={{width: '50%'}}/>
+            <img src={this.props.photoUrl} className="preview" alt=""/>
             <input type='color' className='color' onChange={this.handleColorChange}/>
             <FileUploader
             accept="image/*"
