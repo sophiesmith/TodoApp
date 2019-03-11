@@ -208,7 +208,11 @@ export class Header extends Component {
         .then(
           url => this.props.actions.changePhoto(filename, url)
           );
-    };
+    }
+
+    handleClearPhoto = () => {
+      this.props.actions.changePhoto('', '');
+    }
 
   
 
@@ -228,6 +232,7 @@ export class Header extends Component {
             randomizeFilename
             storageRef={firebase.storage().ref("images")}
             onUploadSuccess={this.handleUploadSuccess} />
+            <input className="clear" type="button" value="Clear photo" onClick={this.handleClearPhoto}/>
             <div className="url">Or enter a URL:<input type="text" onChange={this.handleUrl}/></div>
 		    	</header>
 		    	<Main tasks={this.props.tasks} handleEnter={this.handleEnter} handleToggleAll={this.handleToggleAll} handleTaskChange={this.handleTaskChange} handleBlur={this.handleBlur} handleEdit={this.handleEdit} handleDestroy={this.handleDestroy} handleCompleted={this.handleCompleted}/>

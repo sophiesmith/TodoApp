@@ -44,7 +44,7 @@ export class ListItem extends Component {
 				<div className="view">
 	              <input className="toggle" type="checkbox" checked={checked} onChange={this.handleCompleted.bind(this, this.props.id)}/>
 	              <label style={{color: this.props.color}} onDoubleClick={this.handleEdit.bind(this, this.props.id)}>{this.props.task}</label>
-	              {this.props.photo && <img src={this.props.photo} style={{width: '70%', marginLeft: '60px'}}/>}
+	              {this.props.photo && <img src={this.props.photo}/>}
 	              <button className="destroy" onClick={this.handleDestroy.bind(this, this.props.id)}></button>
 	            </div>
 	            <input className="edit" value={this.props.task} onKeyPress={this.handleEnter.bind(this, this.props.id)} onChange={this.handleTaskChange.bind(this, this.props.id)} onBlur={this.handleBlur.bind(this, this.props.id)}/>
